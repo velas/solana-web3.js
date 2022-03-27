@@ -1001,21 +1001,6 @@ const GetLargestAccountsRpcResult = jsonRpcResultAndContext(
 /**
  * @internal
  */
-const AccountInfoResult = pick({
-  executable: boolean(),
-  owner: PublicKeyFromString,
-  lamports: number(),
-  data: BufferFromRawAccountData,
-  rentEpoch: number(),
-});
-
-/**
- * @internal
- */
-const KeyedAccountInfoResult = pick({
-  pubkey: PublicKeyFromString,
-  account: AccountInfoResult,
-});
 
 const ParsedOrRawAccountData = coerce(
   union([instance(Buffer), ParsedAccountDataResult]),
@@ -1028,6 +1013,22 @@ const ParsedOrRawAccountData = coerce(
     }
   },
 );
+
+const AccountInfoResult = pick({
+  executable: boolean(),
+  owner: PublicKeyFromString,
+  lamports: number(),
+  data: ParsedOrRawAccountData,
+  rentEpoch: number(),
+});
+
+/**
+ * @internal
+ */
+const KeyedAccountInfoResult = pick({
+  pubkey: PublicKeyFromString,
+  account: AccountInfoResult,
+});
 
 /**
  * @internal
@@ -3788,7 +3789,7 @@ export class Connection {
       this._subscribe(
         sub,
         'accountSubscribe',
-        this._buildArgs([sub.publicKey], sub.commitment, 'base64'),
+        this._buildArgs([sub.publicKey], sub.commitment, 'jsonParsed'),
       );
     }
 
