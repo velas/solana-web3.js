@@ -1001,6 +1001,21 @@ const GetLargestAccountsRpcResult = jsonRpcResultAndContext(
 /**
  * @internal
  */
+const AccountInfoResult = pick({
+  executable: boolean(),
+  owner: PublicKeyFromString,
+  lamports: number(),
+  data: BufferFromRawAccountData,
+  rentEpoch: number(),
+});
+
+/**
+ * @internal
+ */
+const KeyedAccountInfoResult = pick({
+  pubkey: PublicKeyFromString,
+  account: AccountInfoResult,
+});
 
 const ParsedOrRawAccountData = coerce(
   union([instance(Buffer), ParsedAccountDataResult]),
@@ -1013,22 +1028,6 @@ const ParsedOrRawAccountData = coerce(
     }
   },
 );
-
-const AccountInfoResult = pick({
-  executable: boolean(),
-  owner: PublicKeyFromString,
-  lamports: number(),
-  data: ParsedOrRawAccountData,
-  rentEpoch: number(),
-});
-
-/**
- * @internal
- */
-const KeyedAccountInfoResult = pick({
-  pubkey: PublicKeyFromString,
-  account: AccountInfoResult,
-});
 
 /**
  * @internal
@@ -1096,7 +1095,7 @@ const GetSignaturesForAddressRpcResult = jsonRpcResult(
  */
 const AccountNotificationResult = pick({
   subscription: number(),
-  result: notificationResultAndContext(AccountInfoResult),
+  result: notificationResultAndContext(ParsedAccountInfoResult),
 });
 
 /**
