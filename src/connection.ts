@@ -1095,7 +1095,7 @@ const GetSignaturesForAddressRpcResult = jsonRpcResult(
  */
 const AccountNotificationResult = pick({
   subscription: number(),
-  result: notificationResultAndContext(AccountInfoResult),
+  result: notificationResultAndContext(ParsedAccountInfoResult),
 });
 
 /**
@@ -3788,7 +3788,7 @@ export class Connection {
       this._subscribe(
         sub,
         'accountSubscribe',
-        this._buildArgs([sub.publicKey], sub.commitment, 'base64'),
+        this._buildArgs([sub.publicKey], sub.commitment, 'jsonParsed'),
       );
     }
 
