@@ -13,8 +13,7 @@ node_modules
 coverage
 .nyc_output
 
-# Release
-lib
+
 
 # Generated docs
 doc
